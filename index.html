@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Pay an Address</h1><br/>
+    <p>Private Key</p>
+    <input type="text" id="private_key_input" placeholder="4b45..." required><br/><br/>
+    <p>Receiving Address</p>
+    <input type="text" id="to_address_input" placeholder="4b45..." required><br/><br/><br/>
+    <button type="button" id="submit_button" onclick="returnAnAccount()">Submit</button>
+</body>
+<script src="web3.js"></script>
+<script>
+
+//Connect to Nodesmith
+const nodeUrl = "https://aion.api.nodesmith.io/v1/mastery/jsonrpc?apiKey=70b0ca3fb61e4cd8a5da5f34dcb0e651";
+const web3 = new Web3(new Web3.providers.HttpProvider(nodeUrl));
+
+//Creating the account object
+async function returnAnAccount() {
+    let privateKeyInput = document.querySelector('#private_key_input').value;
+    let toAddressInput = document.querySelector('#to_address_input').value;
+    account=console.log(web3.eth.accounts.privateKeyToAccount(privateKeyInput));
+}
+
+//Creating the transaction object
+transaction={
+	from=account.address
+	to=toAddressInput,
+	value=1e18,
+}
+
+//Sign transaction using Private Key
+signedTransaction= web3.eth.accounts.signTransaction(transaction,account.privateKey)
+
+//Send transaction
+web3.eth.sendSignedTransaction(signedTransaction.rawTransaction)
+
+</script>
+</html>
